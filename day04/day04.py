@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-print("advent of code 2019 - day 3")
+print("advent of code 2019 - day 4")
 
 puzzle_range_min = 171309
 puzzle_range_max = 643603

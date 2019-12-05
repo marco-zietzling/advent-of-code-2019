@@ -1,7 +1,7 @@
 print("advent of code 2019 - day 2")
 
 
-def prepare_input():
+def read_input():
     with open("input.txt") as file:
         for line in file:
             return [int(i) for i in line.split(",")]
@@ -42,7 +42,7 @@ def run_program(input):
 
 
 # day 2 - part 1
-input = prepare_input()
+input = read_input()
 patch_input(input, 12, 2)
 part1 = run_program(input)
 
@@ -55,7 +55,7 @@ solution_verb = 0
 
 for noun in range(0, 100):
     for verb in range(0, 100):
-        input = prepare_input()
+        input = read_input()
         patch_input(input, noun, verb)
         result = run_program(input)
         if result == 19690720:
