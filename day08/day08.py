@@ -30,7 +30,7 @@ target_layer = min(layer_dict.items(), key=lambda x: x[1][0])
 print(f"target layer = {target_layer[1]} with result = {target_layer[1][1] * target_layer[1][2]}")
 
 # day 8 - part 2
-canvas = [[2 for x in range(image_width)] for y in range(image_height)]
+canvas = [["2" for x in range(image_width)] for y in range(image_height)]
 
 for current_layer_counter in range(number_of_layers):
     current_layer_content = password[
@@ -39,17 +39,19 @@ for current_layer_counter in range(number_of_layers):
     for x in range(image_width):
         for y in range(image_height):
             current_pixel = current_layer_content[y * image_width + x]
-            if canvas[y][x] == 2:
-                canvas[y][x] = int(current_pixel)
+            if canvas[y][x] == "2":
+                canvas[y][x] = current_pixel
 
 # cleanup canvas and produce nicer looking "pixels"
 for x in range(image_width):
     for y in range(image_height):
         current_pixel = current_layer_content[y * image_width + x]
-        if canvas[y][x] == 0:
+        if canvas[y][x] == "0":
             canvas[y][x] = " "
-        elif canvas[y][x] == 1:
+        elif canvas[y][x] == "1":
             canvas[y][x] = "*"
 
 with open("result.txt", mode="w") as file:
     file.write("\n".join([''.join(["{:2}".format(i) for i in row]) for row in canvas]))
+
+# result = GZKJY
