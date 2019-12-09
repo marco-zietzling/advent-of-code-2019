@@ -8,5 +8,7 @@ print("advent of code 2019 - day 9")
 
 computer = comp.IntcodeComputer(os.path.join(os.getcwd(), "input.txt"))
 computer.read_program()
+result = computer.run_program([1])
 
 print(computer.instructions)
+print(result)
