@@ -4,19 +4,24 @@
 class IntcodeComputer:
     """Simple intcode computer running a set of operations on defined input program"""
 
-    # constructor for a new intcode computer
-    def __init__(self):
+    def __init__(self, name: str, filename: str):
+        """constructor for a new intcode computer with provided name"""
+        self.name = name
         self.instructions = []
         self.instruction_pointer = 0
         self.relative_base = 0
         self.output = []
 
-    def read_program(self, filename):
-        """read program instructions from provided input file"""
-
-        print(f"load {filename}")
+        # print(f"load {filename}")
         with open(filename) as file:
             self.instructions = [int(i) for i in file.readline().split(",")] + [0] * 1000
+
+    # def read_program(self, filename):
+    #     """read program instructions from provided input file"""
+    #
+    #     # print(f"load {filename}")
+    #     with open(filename) as file:
+    #         self.instructions = [int(i) for i in file.readline().split(",")] + [0] * 1000
 
     def get_interpreted_param(self, mode: int, arg: int):
         # position mode
