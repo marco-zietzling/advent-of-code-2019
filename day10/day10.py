@@ -1,5 +1,6 @@
 import os
 import math
+from asynchat import async_chat
 
 print("advent of code 2019 - day 10")
 
@@ -15,14 +16,12 @@ class Asteroid:
     def __str__(self):
         return f"(x={self.x}, y={self.y})"
 
-    def calculate_angle_to_point(self, asteroid):
+    def calculate_angle_to(self, asteroid):
         return math.atan2(asteroid.y - self.y, asteroid.x - self.x)
-
-    # def calculate_angle_to_point(self, x: int, y: int):
-    #     return math.atan2(y - self.y, x - self.x)
 
 
 asteroids = list()
+asteroid_visible = dict()
 
 with open(input_file) as file:
     y = 0
@@ -34,12 +33,22 @@ with open(input_file) as file:
             x += 1
         y += 1
 
-print(asteroids[0].calculate_angle_to_point(asteroids[20]))
+print(f"total number of asteroids = {len(asteroids)}")
 
-for asteroid in asteroids:
-    pass
+for candidate_asteroid in asteroids:
+    others_visible = set()
+    for other_asteroid in asteroids:
+        if other_asteroid != candidate_asteroid:
+            angle = round(candidate_asteroid.calculate_angle_to(other_asteroid), 8)
+            others_visible.add(angle)
 
-# grid = [["" for x in range(42)] for y in range(42)]
+    # store result of visible other asteroids for current candidate
+    asteroid_visible[candidate_asteroid] = len(others_visible)
 
-# with open("result.txt", mode="w") as file:
-#     file.write("\n".join([''.join(["{:2}".format(i) for i in row]) for row in grid]))
+    # print(f"other asteroids visible from current asteroids = {len(current_others_visible)}")
+
+# result = 340
+target_asteroid = max(asteroid_visible.items(), key=lambda x: x[1])
+print(f"target asteroid = {target_asteroid}")
+
+# day 10 - part 2
