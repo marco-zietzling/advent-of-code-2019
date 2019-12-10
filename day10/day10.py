@@ -14,7 +14,7 @@ class Asteroid:
         self.y = y
 
     def __str__(self):
-        return f"(x={self.x}, y={self.y})"
+        return f"Asteroid (x={self.x}, y={self.y})"
 
     def calculate_angle_to(self, asteroid):
         return math.atan2(asteroid.y - self.y, asteroid.x - self.x)
@@ -48,7 +48,15 @@ for candidate_asteroid in asteroids:
     # print(f"other asteroids visible from current asteroids = {len(current_others_visible)}")
 
 # result = 340
-target_asteroid = max(asteroid_visible.items(), key=lambda x: x[1])
-print(f"target asteroid = {target_asteroid}")
+(target_asteroid, count) = max(asteroid_visible.items(), key=lambda x: x[1])
+print(f"target asteroid = {target_asteroid} sees {count} other asteroids")
 
 # day 10 - part 2
+# asteroids_by_angle = dict()
+#
+# for other_asteroid in asteroids:
+#     if other_asteroid != target_asteroid:
+#         angle = round(target_asteroid.calculate_angle_to(other_asteroid), 8)
+#         asteroids_by_angle[angle].append(other_asteroid)
+#
+# print(asteroids_by_angle)
