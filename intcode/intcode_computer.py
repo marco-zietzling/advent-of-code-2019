@@ -5,7 +5,7 @@ class IntcodeComputer:
     """Simple intcode computer running a set of operations on defined input program"""
 
     def __init__(self, name: str, filename: str):
-        """constructor for a new intcode computer with provided name"""
+        """constructor for a new intcode computer with provided name and input file"""
         self.name = name
         self.instructions = []
         self.instruction_pointer = 0
@@ -82,9 +82,8 @@ class IntcodeComputer:
             elif opcode == 3:
                 arg1 = self.get_literal_param(param1_mode, self.instructions[self.instruction_pointer + 1])
 
-                input_to_be_used = arguments[input_pointer]
+                self.instructions[arg1] = arguments[input_pointer]
                 input_pointer += 1
-                self.instructions[arg1] = input_to_be_used
                 self.instruction_pointer += 2
 
             # output value at index
@@ -92,7 +91,6 @@ class IntcodeComputer:
                 arg1 = self.get_interpreted_param(param1_mode, self.instructions[self.instruction_pointer + 1])
                 self.output.append(arg1)
                 self.instruction_pointer += 2
-                # print(f"program output = {program[arg1]}")
 
             # jump if true
             elif opcode == 5:

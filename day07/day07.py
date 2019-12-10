@@ -5,23 +5,24 @@ import os
 print("advent of code 2019 - day 7")
 
 # day 7 - part 1
+input_file = os.path.join(os.getcwd(), "input.txt")
 phase_settings = [0, 1, 2, 3, 4]
 max_thruster = -999
 
 for permutation in itertools.permutations(phase_settings, 5):
-    amp_a = comp.IntcodeComputer("A", "input.txt")
+    amp_a = comp.IntcodeComputer("A", input_file)
     result_a = amp_a.run_program([permutation[0], 0])[0]
 
-    amp_b = comp.IntcodeComputer("B", "input.txt")
+    amp_b = comp.IntcodeComputer("B", input_file)
     result_b = amp_b.run_program([permutation[1], result_a])[0]
 
-    amp_c = comp.IntcodeComputer("C", "input.txt")
+    amp_c = comp.IntcodeComputer("C", input_file)
     result_c = amp_c.run_program([permutation[2], result_b])[0]
 
-    amp_d = comp.IntcodeComputer("D", "input.txt")
+    amp_d = comp.IntcodeComputer("D", input_file)
     result_d = amp_d.run_program([permutation[3], result_c])[0]
 
-    amp_e = comp.IntcodeComputer("E", "input.txt")
+    amp_e = comp.IntcodeComputer("E", input_file)
     result_e = amp_e.run_program([permutation[4], result_d])[0]
 
     if result_e > max_thruster:
