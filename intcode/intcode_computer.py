@@ -11,17 +11,12 @@ class IntcodeComputer:
         self.instruction_pointer = 0
         self.relative_base = 0
         self.output = []
+        self.arguments = []
+        self.argument_pointer = 0
 
         # print(f"load {filename}")
         with open(filename) as file:
             self.instructions = [int(i) for i in file.readline().split(",")] + [0] * 1000
-
-    # def read_program(self, filename):
-    #     """read program instructions from provided input file"""
-    #
-    #     # print(f"load {filename}")
-    #     with open(filename) as file:
-    #         self.instructions = [int(i) for i in file.readline().split(",")] + [0] * 1000
 
     def get_interpreted_param(self, mode: int, arg: int):
         # position mode
@@ -46,8 +41,20 @@ class IntcodeComputer:
             return int(self.relative_base + arg)
 
     def run_program(self, arguments: list):
-        input_pointer = 0
+        """deprecated - do not use"""
+        print(f"legacy deprecated method, do not use! use 'provide_arguments' and 'execute' instead")
+        self.provide_arguments(arguments)
+        return self.execute()
 
+    def provide_arguments(self, arguments: list):
+        self.arguments.extend(arguments)
+
+    def consume_output(self):
+        result = self.output.copy()
+        self.output.clear()
+        return result
+
+    def execute(self):
         while True:
             instruction = self.instructions[self.instruction_pointer]
             instruction_str = str(instruction).zfill(5)
@@ -58,9 +65,9 @@ class IntcodeComputer:
             param3_mode = int(instruction_str[0])
             # print(f"opcode = {opcode}, p1mode = {param1_mode}, p2mode = {param2_mode}, p3mode = {param3_mode}")
 
-            # halt (and return program output)
+            # halt (and return exit code)
             if opcode == 99:
-                return self.output
+                return opcode
 
             # addition
             elif opcode == 1:
@@ -78,12 +85,15 @@ class IntcodeComputer:
                 self.instructions[arg3] = arg1 * arg2
                 self.instruction_pointer += 4
 
-            # read input and save at index
+            # read input and save at index, in case of not enough input values, halt (and return exit code)
             elif opcode == 3:
-                arg1 = self.get_literal_param(param1_mode, self.instructions[self.instruction_pointer + 1])
+                # check if we have enough input arguments, otherwise suspend processing
+                if self.argument_pointer >= len(self.arguments):
+                    return opcode
 
-                self.instructions[arg1] = arguments[input_pointer]
-                input_pointer += 1
+                arg1 = self.get_literal_param(param1_mode, self.instructions[self.instruction_pointer + 1])
+                self.instructions[arg1] = self.arguments[self.argument_pointer]
+                self.argument_pointer += 1
                 self.instruction_pointer += 2
 
             # output value at index
