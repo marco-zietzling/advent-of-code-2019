@@ -11,22 +11,32 @@ max_thruster = -999
 
 for permutation in itertools.permutations(phase_settings, 5):
     amp_a = comp.IntcodeComputer("A", input_file)
-    result_a = amp_a.run_program([permutation[0], 0])[0]
+    amp_a.provide_arguments([permutation[0]] + [0])
+    amp_a.execute()
+    result_a = amp_a.consume_output()
 
     amp_b = comp.IntcodeComputer("B", input_file)
-    result_b = amp_b.run_program([permutation[1], result_a])[0]
+    amp_b.provide_arguments([permutation[1]] + result_a)
+    amp_b.execute()
+    result_b = amp_b.consume_output()
 
     amp_c = comp.IntcodeComputer("C", input_file)
-    result_c = amp_c.run_program([permutation[2], result_b])[0]
+    amp_c.provide_arguments([permutation[2]] + result_b)
+    amp_c.execute()
+    result_c = amp_c.consume_output()
 
     amp_d = comp.IntcodeComputer("D", input_file)
-    result_d = amp_d.run_program([permutation[3], result_c])[0]
+    amp_d.provide_arguments([permutation[3]] + result_c)
+    amp_d.execute()
+    result_d = amp_d.consume_output()
 
     amp_e = comp.IntcodeComputer("E", input_file)
-    result_e = amp_e.run_program([permutation[4], result_d])[0]
+    amp_e.provide_arguments([permutation[4]] + result_d)
+    amp_e.execute()
+    result_e = amp_e.consume_output()
 
-    if result_e > max_thruster:
-        max_thruster = result_e
+    if result_e[0] > max_thruster:
+        max_thruster = result_e[0]
 
 # result = 118936
 print(f"max thruster result = {max_thruster}")
