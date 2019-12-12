@@ -62,30 +62,38 @@ class PaintingRobot:
 
         # print(f"new status: direction = {self.current_direction}, position = {self.current_position}")
 
+    def get_paint_for_current_position(self):
+        return canvas.get(self.current_position, 0)
+
     def run_paint_job(self):
         # input for intcode computer is current paint: 0=black, 1=white
-        # output is two values: new color to paint current position and next move (0 = turn left, 1 = turn right)
+        # output is two values: new color for current position and turn for next move (0 = turn left, 1 = turn right)
+
+        # initial input = 0 for position (0,0)
         self.computer.provide_arguments([0])
         exit_code = self.computer.execute()
-        output = self.computer.consume_output()
 
         while exit_code != 99:
-            pass
+            # print(f"start run")
 
-        print(f"current input arguments = {self.computer.arguments}")
-        print(f"exit_code = {exit_code}")
-        print(f"program output = {output}")
-        self.calculate_next_position(output[1])
+            (paint_for_cur_pos, next_turn) = self.computer.consume_output()
+            # print(f"paint {self.current_position} with {paint_for_cur_pos}")
 
-        self.computer.provide_arguments([0])
-        exit_code = self.computer.execute()
-        output = self.computer.consume_output()
-        print(f"current input arguments = {self.computer.arguments}")
-        print(f"exit_code = {exit_code}")
-        print(f"program output = {output}")
-        self.calculate_next_position(output[1])
+            canvas[self.current_position] = paint_for_cur_pos
+            self.calculate_next_position(next_turn)
+            # print(f"new position = {self.current_position}")
+
+            self.computer.provide_arguments([self.get_paint_for_current_position()])
+            exit_code = self.computer.execute()
+
+            # print(f"exit code = {exit_code} of current run")
 
 
 canvas = dict()
 robot = PaintingRobot(input_file, canvas)
 robot.run_paint_job()
+
+# result = 1785
+print(f"number of panels painted at least once = {len(canvas.keys())}")
+
+# day 11 - part 2
