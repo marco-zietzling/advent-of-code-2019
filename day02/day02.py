@@ -1,50 +1,22 @@
+import intcode.intcode_computer as comp
+
+import os
+
 print("advent of code 2019 - day 2")
 
 
-def read_input():
-    with open("input.txt") as file:
-        for line in file:
-            return [int(i) for i in line.split(",")]
-
-
-def patch_input(input, noun, verb):
-    input[1] = noun
-    input[2] = verb
-
-
-def run_program(input):
-    current_index = 0
-
-    while True:
-        opcode = input[current_index]
-        index1 = input[current_index + 1]
-        index2 = input[current_index + 2]
-        index_target = input[current_index + 3]
-
-        # terminate
-        if opcode == 99:
-            # print("program terminated - value at position '0'=" + str(input[0]))
-            return input[0]
-
-        # addition
-        elif opcode == 1:
-            input[index_target] = input[index1] + input[index2]
-
-        # multiplication
-        elif opcode == 2:
-            input[index_target] = input[index1] * input[index2]
-
-        else:
-            print(f"program exception - unknown opcode {opcode}")
-            break
-
-        current_index = current_index + 4
+def patch_input(instructions: list, noun: int, verb: int):
+    instructions[1] = noun
+    instructions[2] = verb
 
 
 # day 2 - part 1
-input = read_input()
-patch_input(input, 12, 2)
-part1 = run_program(input)
+input_file = os.path.join(os.getcwd(), "input.txt")
+computer = comp.IntcodeComputer("part 1", input_file)
+
+patch_input(computer.instructions, 12, 2)
+computer.execute()
+part1 = computer.instructions[0]
 
 # result = 4945026
 print("part 1: " + str(part1))
@@ -55,9 +27,11 @@ solution_verb = 0
 
 for noun in range(0, 100):
     for verb in range(0, 100):
-        input = read_input()
-        patch_input(input, noun, verb)
-        result = run_program(input)
+        computer = comp.IntcodeComputer("part 2", input_file)
+        patch_input(computer.instructions, noun, verb)
+        computer.execute()
+        result = computer.instructions[0]
+
         if result == 19690720:
             print(f"input found: noun={noun} and verb={verb}")
             solution_noun = noun
