@@ -1,6 +1,5 @@
 import os
 import math
-from asynchat import async_chat
 
 print("advent of code 2019 - day 10")
 
