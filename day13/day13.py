@@ -25,3 +25,6 @@ print(f"number block tiles = {block_tile_counter}")
 # day 13 - part 2
 computer = comp.IntcodeComputer("Arcade", input_file)
 computer.instructions[0] = 2
+
+joystick = 0
+segment_display = 0

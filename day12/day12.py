@@ -1,4 +1,5 @@
 import os
+import math
 
 print("advent of code 2019 - day 12")
 
@@ -18,6 +19,9 @@ class Moon(object):
         if isinstance(other, Moon):
             return self.x == other.x and self.y == other.y and self.z == other.z
         return False
+
+    def __str__(self):
+        return f"(x={self.x}, y={self.y}, z={self.z})"
 
 
 input_file = os.path.join(os.getcwd(), "input.txt")
@@ -96,17 +100,32 @@ print(f"total energy = {total_energy}")
 moons = read_input()
 original_moons = read_input()
 current_step = 0
+moon_steps = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+moon_0x_found, moon_0y_found, moon_0z_found = False, False, False
 
 while True:
     execute_step(moons)
     current_step += 1
-    if current_step % 10000 == 0:
+    if current_step % 1000000 == 0:
         print(f"current step: {current_step}")
 
-    if moons[0] == original_moons[0] and \
-            moons[1] == original_moons[1] and \
-            moons[2] == original_moons[2] and \
-            moons[3] == original_moons[3]:
+    # focus on moon 0, each axis on its own
+    if not moon_0x_found and moons[0].x == original_moons[0].x:
+        moon_0x_found = True
+        moon_steps[0][0] = current_step
+
+    if not moon_0y_found and moons[0].y == original_moons[0].y:
+        moon_0y_found = True
+        moon_steps[0][1] = current_step
+
+    if not moon_0z_found and moons[0].z == original_moons[0].z:
+        moon_0z_found = True
+        moon_steps[0][2] = current_step
+
+    if moon_0x_found and moon_0y_found and moon_0z_found:
         break
 
-print(f"identical state found after {current_step} steps")
+print(f"individual steps per moon per axis to come back to initial position")
+print(moon_steps)
+
+# result = ???
