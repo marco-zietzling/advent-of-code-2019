@@ -40,12 +40,6 @@ class IntcodeComputer:
         elif mode == 2:
             return int(self.relative_base + arg)
 
-    def run_program(self, arguments: list):
-        """deprecated - do not use"""
-        print(f"legacy deprecated method, do not use! use 'provide_arguments' and 'execute' instead")
-        self.provide_arguments(arguments)
-        return self.execute()
-
     def provide_arguments(self, arguments: list):
         self.arguments.extend(arguments)
 
@@ -154,5 +148,4 @@ class IntcodeComputer:
                 self.instruction_pointer += 2
 
             else:
-                print(f"program exception - unknown opcode = {opcode}")
-                break
+                raise NameError(f"unknown opcode: {opcode}")
